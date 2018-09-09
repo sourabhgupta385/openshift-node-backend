@@ -9,25 +9,21 @@ node {
    
    stage("Install Dependencies"){
      dir('node-backend') {
-         if(isUnix()){
-                sh 'npm install'
-         }else{
-                bat 'npm install'
-         }
+        sh 'npm install'
      }
    }
    
    stage("Code Quality"){
      dir('node-backend') {
-             sh 'npm run lint'
-             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '', reportFiles: 'quality.html', reportName: 'Quality Report', reportTitles: ''])
+        sh 'npm run lint'
+        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '', reportFiles: 'quality.html', reportName: 'Quality Report', reportTitles: ''])
      }
    }
    
    stage("Unit Test"){
      dir('node-backend') {
-            sh 'npm run test'
-            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'coverage', reportFiles: 'index.html', reportName: 'Coverage Report', reportTitles: ''])
+        sh 'npm run test'
+        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'coverage', reportFiles: 'index.html', reportName: 'Coverage Report', reportTitles: ''])
      }
    }
 }
