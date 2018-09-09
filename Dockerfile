@@ -16,7 +16,7 @@ RUN npm install --only=production
 
 EXPOSE 8080
 
-ENV PORT=8080 DB_URL=mongodb://akilan:akilan@mongodb:27017/employee
+ENV PORT=8080 DB_URL=mongodb://admin:admin@mongodb:27017/employee?authSource=admin
 
 USER appuser
 
