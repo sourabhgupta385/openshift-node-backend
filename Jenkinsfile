@@ -20,4 +20,14 @@ node {
         sh 'npm run test'
         publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'coverage', reportFiles: 'index.html', reportName: 'Coverage Report', reportTitles: ''])
    }
+
+   stage("Building Application"){
+        openshiftBuild(buildConfig: 'node-backend-app',showBuildLogs: 'true')
+   }
+
+   stage("Deploying Application"){
+       openshiftDeploy(deploymentConfig: 'node-backend-app')
+   }
+
+
 }

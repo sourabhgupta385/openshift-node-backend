@@ -33,7 +33,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get("/api", (req, res) => {
-    res.json({ "name": "Akilan" });
+    res.json({ 
+        "name": "NodeJS Backend",
+        "Version": 1.0 
+    });
 })
 
 // Get all the employees after successfull verification
