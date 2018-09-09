@@ -8,8 +8,8 @@
     * oc policy add-role-to-user edit system:serviceaccount:coe-openshift:jenkins -n coe-mern-project
 
     * Create a Pipeline for the project
-    * oc new-app https://github.com/akilans/openshift-node-backend.git  --strategy=pipeline --env DB_URL=DB_URL=mongodb://admin:admin@mongodb:27017/employee --name=node-backend-pipeline
+    * oc new-app https://github.com/akilans/openshift-node-backend.git  --strategy=pipeline --env DB_URL=mongodb://admin:admin@mongodb:27017/employee --name=node-backend-pipeline
 
-    * 
+    * oc new-app https://github.com/akilans/openshift-node-backend.git --strategy=docker --env DB_URL=mongodb://admin:admin@mongodb:27017/employee --name=node-backend-app
 
 
