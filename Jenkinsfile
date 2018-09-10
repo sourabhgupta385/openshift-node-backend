@@ -21,12 +21,20 @@ node {
         publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'coverage', reportFiles: 'index.html', reportName: 'Coverage Report', reportTitles: ''])
    }
 
-   stage("Building Application"){
+   stage("Dev - Building Application"){
         openshiftBuild(buildConfig: 'node-backend-app',showBuildLogs: 'true')
    }
 
-   stage("Deploying Application"){
+   stage("Dev - Deploying Application"){
        openshiftDeploy(deploymentConfig: 'node-backend-app')
+   }
+   
+   stage("Prod - Building Application"){
+        openshiftBuild(namespace:'prod-coe-mern-stack', buildConfig: 'node-backend-app',showBuildLogs: 'true')
+   }
+
+   stage("Prod - Deploying Application"){
+       openshiftDeploy(namespace:'prod-coe-mern-stack', deploymentConfig: 'node-backend-app')
    }
 
 
