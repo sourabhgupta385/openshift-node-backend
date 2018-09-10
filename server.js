@@ -35,7 +35,7 @@ app.use(bodyParser.json());
 app.get("/api", (req, res) => {
     res.json({ 
         "name": "NodeJS Backend",
-        "Version": 1.0 
+        "Version": 1.1 
     });
 })
 
