@@ -29,6 +29,10 @@ node {
        openshiftDeploy(deploymentConfig: 'node-backend-app')
    }
    
+   stage('Deploy to Production approval'){
+      input "Deploy to prod?"
+   }
+   
    stage("Prod - Building Application"){
         openshiftBuild(namespace:'prod-coe-mern-stack', buildConfig: 'node-backend-app',showBuildLogs: 'true')
    }
