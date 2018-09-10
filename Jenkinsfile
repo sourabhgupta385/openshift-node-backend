@@ -29,6 +29,10 @@ node {
        openshiftDeploy(deploymentConfig: 'node-backend-app')
    }
    
+   stage("Verify Application"){
+       openshiftVerifyService(svcName: 'node-backend-app')
+   }
+   
    stage('Deploy to Production approval'){
       input "Deploy to prod?"
    }
