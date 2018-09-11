@@ -1,0 +1,356 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: node-backend-app
+    name: node-backend-app
+  spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: node-backend-app:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      git:
+        uri: https://github.com/akilans/openshift-node-backend.git
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: node:8
+      type: Docker
+    successfulBuildsHistoryLimit: 5
+    triggers:
+    - github:
+        secret: n7usSYX_qirutD9G8hAH
+      type: GitHub
+    - generic:
+        secret: lxBiWnTgOD2vcRmD8Amu
+      type: Generic
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+  status:
+    lastVersion: 0
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: react-frontend-app
+    name: react-frontend-app
+  spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: react-frontend-app:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      git:
+        uri: https://github.com/akilans/openshift-react-frontend.git
+      type: Git
+    strategy:
+      dockerStrategy:
+        env:
+        - name: REACT_APP_API_URL
+          value: http://node-backend-app-prod-coe-mern-stack.apps.na39.openshift.opentlc.com/api
+        from:
+          kind: ImageStreamTag
+          name: node:8
+          namespace: prod-coe-mern-stack
+      type: Docker
+    successfulBuildsHistoryLimit: 5
+    triggers:
+    - github:
+        secret: KT9eZG1bn-jHvG3Owfxb
+      type: GitHub
+    - generic:
+        secret: STdLljKdR1R_Qs21r8Rd
+      type: Generic
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+  status:
+    lastVersion: 0
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      template.alpha.openshift.io/wait-for-ready: "true"
+    creationTimestamp: null
+    generation: 2
+    labels:
+      template: mongodb-ephemeral-template
+    name: mongodb
+    ownerReferences:
+    - apiVersion: template.openshift.io/v1
+      blockOwnerDeletion: true
+      kind: TemplateInstance
+      name: 239f3fce-1510-4067-a519-52873fcd0195
+      uid: a17fabde-b4e0-11e8-9398-0220bffb280e
+  spec:
+    replicas: 1
+    selector:
+      name: mongodb
+    strategy:
+      activeDeadlineSeconds: 21600
+      recreateParams:
+        timeoutSeconds: 600
+      resources: {}
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          name: mongodb
+      spec:
+        containers:
+        - env:
+          - name: MONGODB_USER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: mongodb
+          - name: MONGODB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: mongodb
+          - name: MONGODB_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-admin-password
+                name: mongodb
+          - name: MONGODB_DATABASE
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: mongodb
+          image: registry.access.redhat.com/rhscl/mongodb-32-rhel7@sha256:58ad73c16aca6c8c1eafcb670d4b692c79ddcb31a3d98814e3fe7498c5702510
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 27017
+            timeoutSeconds: 1
+          name: mongodb
+          ports:
+          - containerPort: 27017
+            protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+              - /bin/sh
+              - -i
+              - -c
+              - mongo 127.0.0.1:27017/$MONGODB_DATABASE -u $MONGODB_USER -p $MONGODB_PASSWORD
+                --eval="quit()"
+            failureThreshold: 3
+            initialDelaySeconds: 3
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              memory: 512Mi
+          securityContext:
+            capabilities: {}
+            privileged: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/mongodb/data
+            name: mongodb-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: mongodb-data
+    test: false
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - mongodb
+        from:
+          kind: ImageStreamTag
+          name: mongodb:3.2
+          namespace: openshift
+        lastTriggeredImage: registry.access.redhat.com/rhscl/mongodb-32-rhel7@sha256:58ad73c16aca6c8c1eafcb670d4b692c79ddcb31a3d98814e3fe7498c5702510
+      type: ImageChange
+    - type: ConfigChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    generation: 7
+    labels:
+      app: node-backend-app
+    name: node-backend-app
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      app: node-backend-app
+      deploymentconfig: node-backend-app
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: node-backend-app
+          deploymentconfig: node-backend-app
+      spec:
+        containers:
+        - env:
+          - name: DB_URL
+            value: mongodb://admin:admin@mongodb:27017/employee
+          image: docker-registry.default.svc:5000/prod-coe-mern-stack/node-backend-app@sha256:719dfca7ee63d539eefce13c48bfd68a24613015fac4afa2bb6041b053f278b5
+          imagePullPolicy: Always
+          name: node-backend-app
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - imageChangeParams:
+        containerNames:
+        - node-backend-app
+        from:
+          kind: ImageStreamTag
+          name: node-backend-app:latest
+          namespace: prod-coe-mern-stack
+        lastTriggeredImage: docker-registry.default.svc:5000/prod-coe-mern-stack/node-backend-app@sha256:719dfca7ee63d539eefce13c48bfd68a24613015fac4afa2bb6041b053f278b5
+      type: ImageChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    generation: 5
+    labels:
+      app: react-frontend-app
+    name: react-frontend-app
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      app: react-frontend-app
+      deploymentconfig: react-frontend-app
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: react-frontend-app
+          deploymentconfig: react-frontend-app
+      spec:
+        containers:
+        - env:
+          - name: REACT_APP_API_URL
+            value: http://node-backend-app-prod-coe-mern-stack.apps.na39.openshift.opentlc.com/api
+          image: docker-registry.default.svc:5000/prod-coe-mern-stack/react-frontend-app@sha256:b4fc42b911a5ae2cf1653fd7a94afeec2d7e1a764fa9cbcb3542ca5daa6a3337
+          imagePullPolicy: Always
+          name: react-frontend-app
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - react-frontend-app
+        from:
+          kind: ImageStreamTag
+          name: react-frontend-app:latest
+          namespace: prod-coe-mern-stack
+        lastTriggeredImage: docker-registry.default.svc:5000/prod-coe-mern-stack/react-frontend-app@sha256:b4fc42b911a5ae2cf1653fd7a94afeec2d7e1a764fa9cbcb3542ca5daa6a3337
+      type: ImageChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+kind: List
+metadata: {}
