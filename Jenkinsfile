@@ -38,7 +38,9 @@ node {
    }
       
    stage("Load Testing"){
-      sh 'artillery run perfTest.yml --output load-test.json'
+      waitUntil {
+          sh 'artillery run perfTest.yml --output load-test.json'
+      }
       sh 'artillery report load-test.json --output load-test-result.html'
    }
    
