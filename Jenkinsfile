@@ -34,8 +34,11 @@ node {
    }
    
    stage("Functional Testinig"){
-        sh 'python functionalTest.py'
-        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'functional-test-result', reportFiles: 'index.html', reportName: 'Functional Test report', reportTitles: ''])
+        sh 'python functionalTest.py'   
+   }
+   
+   stage("Publish Report){
+      publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'functional-test-result', reportFiles: 'index.html', reportName: 'Functional Test report', reportTitles: ''])
    }
    
    stage('Deploy to Production approval'){
