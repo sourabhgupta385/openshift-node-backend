@@ -38,14 +38,13 @@ node {
    }
       
    stage("Load Testing"){
-      waitUntil {
           sh 'artillery run perfTest.yml --output load-test.json'
-          return true
-      }
-      sh 'artillery report load-test.json --output load-test-result.html'
    }
    
    stage("Publish Report"){
+      
+      sh 'artillery report load-test.json --output load-test-result.html'
+      
       publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'functional-test-result', reportFiles: 'index.html', reportName: 'Functional Test report', reportTitles: ''])
       
       publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '', reportFiles: 'load-test-result.html', reportName: 'Load Test report', reportTitles: ''])
