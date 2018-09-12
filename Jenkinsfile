@@ -41,7 +41,7 @@ node {
       publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'functional-test-result', reportFiles: 'index.html', reportName: 'Functional Test report', reportTitles: ''])
    }
          
-   stage("Load Testing){
+   stage("Load Testing"){
       sh 'artillery run perfTest.yml --output load-test.json'
       sh 'artillery report load-test.json'
       publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '', reportFiles: 'load-test.json.html', reportName: 'Load Test report', reportTitles: ''])
