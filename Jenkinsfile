@@ -37,7 +37,7 @@ node {
         sh 'python functionalTest.py'   
    }
    
-   stage("Publish Report){
+   stage("Publish Report"){
       publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'functional-test-result', reportFiles: 'index.html', reportName: 'Functional Test report', reportTitles: ''])
    }
          
