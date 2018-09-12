@@ -33,6 +33,11 @@ node {
        openshiftVerifyService(svcName: 'node-backend-app')
    }
    
+   stage("Functional Testinig"){
+        sh 'python functionalTest.py'
+        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'functional-test-result', reportFiles: 'index.html', reportName: 'Functional Test Report', reportTitles: ''])
+   }
+   
    stage('Deploy to Production approval'){
       input "Deploy to prod?"
    }
