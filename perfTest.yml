@@ -1,8 +1,8 @@
 config:
   target: 'http://node-backend-app:8080'
   phases:
-    - duration: 30
-      arrivalRate: 5
+    - duration: 60
+      arrivalRate: 20
   defaults:
     headers:
       x-my-service-auth: '987401838271002188298567'
