@@ -43,8 +43,8 @@ node {
          
    stage("Load Testing"){
       sh 'artillery run perfTest.yml --output load-test.json'
-      sh 'artillery report load-test.json'
-      publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '', reportFiles: 'load-test.json.html', reportName: 'Load Test report', reportTitles: ''])
+      sh 'artillery report load-test.json --output load-test-result.html'
+      publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '', reportFiles: 'load-test-result.html', reportName: 'Load Test report', reportTitles: ''])
    }
                
    
