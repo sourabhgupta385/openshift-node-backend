@@ -40,6 +40,7 @@ node {
    stage("Load Testing"){
       waitUntil {
           sh 'artillery run perfTest.yml --output load-test.json'
+          return true
       }
       sh 'artillery report load-test.json --output load-test-result.html'
    }
