@@ -19,6 +19,8 @@
         * Access jenkins url and install NodeJS plugin and HTML publisher plugin
 
         * oc policy add-role-to-user edit system:serviceaccount:${DEV_PROJECT_NAME}:jenkins -n ${PROD_PROJECT_NAME}
+        
+        * Edit Jenkins file to point it to the PROD_PROJECT_NAME
 
 
     
