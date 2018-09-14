@@ -51,7 +51,7 @@ node {
    }
    
    
-               
+   /*          
    
    stage('Deploy to Production approval'){
       input "Deploy to prod?"
@@ -65,5 +65,6 @@ node {
        openshiftDeploy(namespace:'prod-coe-mern-stack', deploymentConfig: 'node-backend-app')
    }
 
+   */
 
 }
