@@ -40,6 +40,17 @@ app.get("/api", (req, res) => {
 })
 
 // Get all the employees after successfull verification
+app.get("/api/getAll", (req, res) => {
+
+    Employee.find({}).then(employees => {
+        //console.log(employees);
+        res.json({
+            employees: employees
+        });
+    })
+})
+
+// Get all the employees after successfull verification
 app.get("/api/getEmployees", verifyToken, (req, res) => {
 
     Employee.find({}).then(employees => {
