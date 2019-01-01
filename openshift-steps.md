@@ -1,6 +1,7 @@
   # Steps 
-      * Launch mongodb template with username admin & password admin
+      
       * Create 2 projects in Openshift Web Console. One for QA[node-qa] and another one for Production[node-prod]
+      * Launch mongodb template with username admin & password admin on both projects
       * oc project node-qa - Switch to QA project
       * oc new-app jenkins-persistent -p ENABLE_OAUTH=false -e JENKINS_PASSWORD=admin -n ms-qa - Create Jenkins Instance
       * Increase the Quota to 1.5GB of RAM and 2500 millicores CPU by going Applications -> Deployments -> Jenkins -> Edit Resource Limits
