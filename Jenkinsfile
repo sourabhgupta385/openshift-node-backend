@@ -51,6 +51,10 @@ node {
       input "Deploy to prod?"
    }
    
+   stage("Tagging Image for Production"){
+      openshiftTag(srcStream: 'node-backend-app', srcTag: 'latest', destStream: 'node-backend-app', destTag: 'prod')
+   }
+   
    /*
    stage("Prod - Building Application"){
         openshiftBuild(namespace:'node-prod', buildConfig: 'node-backend-app',showBuildLogs: 'true')
