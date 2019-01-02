@@ -4,7 +4,7 @@ node {
    sh 'npm --version'
    
    stage("Checkout Source"){
-       checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/akilans/openshift-node-backend.git']]])
+       checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/sourabhgupta385/openshift-node-backend.git']]])
    }
    
    stage("Install Dependencies"){
@@ -62,7 +62,7 @@ node {
    */
 
    stage("Prod - Deploying Application"){
-       openshiftDeploy(namespace:'node-prod', deploymentConfig: 'node-backend-app')
+       openshiftDeploy(namespace:'node-prod-sourabh', deploymentConfig: 'node-backend-app')
    }
 
 
