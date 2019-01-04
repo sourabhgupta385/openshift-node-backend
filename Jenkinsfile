@@ -62,7 +62,7 @@ node {
    */
 
    stage("Prod - Deploying Application"){
-       openshiftDeploy(namespace:'node-prod-sourabh', deploymentConfig: 'node-backend-app')
+       openshiftDeploy(namespace:'pe', deploymentConfig: 'node-backend-app')
    }
 
 
